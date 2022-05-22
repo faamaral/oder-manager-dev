@@ -1,3 +1,9 @@
 expense-control-backend/.venv/
 
 expense-contro-backend/poetry.lock
+
+expense-control-frontend/node_modules/
+
+git-credential-manager/
+
+install-from-source.sh
