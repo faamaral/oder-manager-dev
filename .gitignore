@@ -1,4 +1,11 @@
-expense-control-backend/.venv/
+server/.venv/
+server/.idea/
+
+**.env
+
+**.env.dev
+
+**__pycache__
 
 expense-contro-backend/poetry.lock
 
