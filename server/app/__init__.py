@@ -3,8 +3,8 @@ __version__ = '0.1.0'
 from flask import Flask
 from flask_migrate import Migrate
 
-from backend import routes
-from backend.models import db
+from app import routes
+from app.models import db
 from config import Config, Development, Production
 
 migrate = Migrate()

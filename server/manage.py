@@ -1,7 +1,7 @@
 from flask.cli import FlaskGroup
 
-from backend import create_app
-from backend.models import db
+from app import create_app
+from app.models import db
 
 app = create_app()
 
