@@ -4,32 +4,34 @@ services:
     backend:
         restart: always
         build: 
-            context: ./backend
+            context: ./server
             dockerfile: Dockerfile.dev
-        # command: python manage.py run -h 0.0.0.0
+        command: python manage.py run
         volumes:
-            - ./backend:/backend
+            - ./server:/usr/src/order-manager/server
         ports: 
             - 5000:5000
-        env_file: ./backend/.env.dev
+        environment:
+        - FLASK_APP=app
+        - FLASK_ENV=development
         depends_on:
             - db
         networks:
             - expense-control-net
         
 
-    frontend:
+    client:
         build: 
-            context: ./frontend
+            context: ./client
             dockerfile: Dockerfile.dev
         volumes:
-            - ./frontend:/frontend
-            - ./frontend:/frontend/node_modules
+            - ./client:/usr/src/order-manager/client
+            - /usr/src/order-manager/client/node_modules
+            - usr/src/order-manager/client/.next
         ports: 
-            - 8080:8080
-        command: sh -c "npm install && npm run serve"
-        environment: 
-            - CHOKIDAR_USEPOLLING=true
+            - 3000:3000
+        # environment: 
+        #     - CHOKIDAR_USEPOLLING=true
         networks:
             - expense-control-net
 

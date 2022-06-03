@@ -1,20 +1,14 @@
-FROM python:3.9-slim-buster
+FROM python:3.8-alpine
 
-WORKDIR /backend
-
-
-RUN pip install poetry
-
-RUN poetry config virtualenvs.in-project true
-    # && poetry config virtualenvs.create true \
-    # && poetry install
-
-RUN apt-get update && apt-get install -y netcat
-
-
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+WORKDIR /usr/src/order-manager/server
 
 COPY . .
 
-# ENTRYPOINT ["/backend/entrypoint.sh"]
+RUN pip install -r requirements.txt
+
+RUN flask db init
+
+RUN flask db migrate -m "initial migration"
+
+RUN flask db upgrade
+
