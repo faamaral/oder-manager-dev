@@ -1,4 +1,6 @@
+from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
@@ -10,10 +12,39 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
     role = db.Column(db.String(80), nullable=False)
-    cpf = db.Column(db.String(80), unique=True, nullable=False)
+    cpf = db.Column(db.String(11), unique=True, nullable=False)
     active = db.Boolean()
-    created_at = db.Column(db.DateTime, nullable=False)
-    updated_at = db.Column(db.DateTime, nullable=False)
+    created_at = db.Column(db.DateTime,)
+    updated_at = db.Column(db.DateTime,)
+
+    def __init__(self, full_name, username, email, password, role, cpf):
+        self.full_name = full_name
+        self.username = username
+        self.email = email
+        self.password = generate_password_hash(password)
+        self.role = role
+        self.cpf = cpf
+        self.active = True
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+
+    def verify_password(self, password):
+        return check_password_hash(self.password, password)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'full_name': self.full_name,
+            'username': self.username,
+            'email': self.email,
+            'password': self.password,
+            'role': self.role,
+            'cpf': self.cpf,
+            'active': self.active,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+        }
+
     def __repr__(self):
         return '<User %r>' % self.username
 
@@ -27,8 +58,8 @@ class Endereco(db.Model):
     bairro = db.Column(db.String(80), nullable=False)
     cidade = db.Column(db.String(80), nullable=False)
     estado = db.Column(db.String(80), nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False)
-    updated_at = db.Column(db.DateTime, nullable=False)
+    created_at = db.Column(db.DateTime,)
+    updated_at = db.Column(db.DateTime,)
     def __repr__(self):
         return '<Endereco %r>' % self.id
 
@@ -38,8 +69,8 @@ class Customer(db.Model):
     full_name = db.Column(db.String(), nullable=False)
     phone_number = db.Column(db.Integer(), nullable=False)
 
-    created_at = db.Column(db.DateTime, nullable=False)
-    updated_at = db.Column(db.DateTime, nullable=False)
+    created_at = db.Column(db.DateTime,)
+    updated_at = db.Column(db.DateTime,)
     status = db.Column(db.Boolean, nullable=False)
 
     def __repr__(self):
@@ -55,8 +86,8 @@ class Product(db.Model):
     preco = db.Column(db.Float, nullable=False)
     nome = db.Column(db.String(255), nullable=False)
     descricao = db.Column(db.String(255), nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False)
-    updated_at = db.Column(db.DateTime, nullable=False)
+    created_at = db.Column(db.DateTime,)
+    updated_at = db.Column(db.DateTime,)
 
     def __repr__(self):
         return '<Product %r>' % self.nome
@@ -67,8 +98,8 @@ class Order(db.Model):
     status = db.Column(db.String(45), nullable=False)
     order_date = db.Column(db.DateTime, nullable=False)
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False)
-    updated_at = db.Column(db.DateTime, nullable=False)
+    created_at = db.Column(db.DateTime,)
+    updated_at = db.Column(db.DateTime,)
 
     def __repr__(self):
         return '<Order %r>' % self.id
@@ -80,8 +111,8 @@ class OrderProduct(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
     amount = db.Column(db.Integer, nullable=False)
     price_total = db.Column(db.Float, nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False)
-    updated_at = db.Column(db.DateTime, nullable=False)
+    created_at = db.Column(db.DateTime,)
+    updated_at = db.Column(db.DateTime,)
 
     def __repr__(self):
         return '<OrderProduct %r>' % self.id

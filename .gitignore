@@ -16,3 +16,7 @@ expense-control-frontend/node_modules/
 git-credential-manager/
 
 install-from-source.sh
+
+postgres-data/
+
+/server/expense-control.sqlite
