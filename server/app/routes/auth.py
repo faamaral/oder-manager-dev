@@ -1,8 +1,8 @@
-from crypt import methods
 from datetime import datetime, timedelta
 from flask import Blueprint, jsonify, make_response, request
 from flask_jwt_extended import create_access_token, create_refresh_token
 from marshmallow import ValidationError
+from sqlalchemy.exc import SQLAlchemyError, StatementError
 
 from app.models import User
 from app.models import db
@@ -31,12 +31,12 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        return jsonify({
+        return make_response(jsonify({
             'message': 'User created successfully',
             'status': 201
-        })
-    except Exception as err:
-        return make_response('User already exists', 400)
+        }), 201)
+    except StatementError as err:
+        return make_response(err.statement, 400)
 
 
 @auth.route('/login', methods=['POST'])

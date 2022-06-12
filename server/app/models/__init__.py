@@ -7,13 +7,13 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
-    full_name = db.Column(db.String(), nullable=False)
-    username = db.Column(db.String(80), unique=True, nullable=False)
+    full_name = db.Column(db.String(255), nullable=False)
+    username = db.Column(db.String(120), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(80), nullable=False)
-    role = db.Column(db.String(80), nullable=False)
-    cpf = db.Column(db.String(11), unique=True, nullable=False)
-    active = db.Boolean()
+    password = db.Column(db.String(255), nullable=False)
+    role = db.Column(db.String(255), nullable=False)
+    cpf = db.Column(db.String(20), unique=True, nullable=False)
+    active = db.Column(db.Boolean(), default=True)
     created_at = db.Column(db.DateTime,)
     updated_at = db.Column(db.DateTime,)
 
@@ -23,7 +23,7 @@ class User(db.Model):
         self.email = email
         self.password = generate_password_hash(password)
         self.role = role
-        self.cpf = cpf
+        self.cpf = cpf,
         self.active = True
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
@@ -88,6 +88,14 @@ class Product(db.Model):
     descricao = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime,)
     updated_at = db.Column(db.DateTime,)
+
+    def __init__(self, nome, preco, descricao):
+        self.nome = nome
+        self.preco = preco
+        self.descricao = descricao
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+        
 
     def __repr__(self):
         return '<Product %r>' % self.nome

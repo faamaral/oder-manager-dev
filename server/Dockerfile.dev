@@ -4,11 +4,11 @@ WORKDIR /usr/src/order-manager/server
 
 COPY . .
 
-RUN pip install -r requirements.txt
+RUN pip install -r requirements-dev.txt
 
-RUN flask db init
+# RUN flask db init
 
-RUN flask db migrate -m "initial migration"
+# RUN flask db migrate -m "initial migration"
 
-RUN flask db upgrade
+# RUN flask db upgrade
 

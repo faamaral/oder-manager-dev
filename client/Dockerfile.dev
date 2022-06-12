@@ -1,11 +1,10 @@
 FROM node:lts-alpine
 
+RUN mkdir -p /usr/src/order-manager/client
+
 WORKDIR /usr/src/order-manager/client
 
-COPY package*.json .
+# ENV PATH /usr/src/order-manager/client/node_modules/.bin:$PATH
 
-RUN npm install
-
-COPY . .
-
-RUN npm run dev
+EXPOSE 3000
+# RUN npm run dev
